@@ -3,7 +3,7 @@ package com.quant.core.factory;
 
 import com.quant.common.domain.vo.IndicatorCalParam;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 
 /**
  * 指标工厂基类
@@ -11,9 +11,9 @@ import org.ta4j.core.TimeSeries;
  */
 public abstract class AbsIndicatorFactory {
 
-    protected volatile TimeSeries timeSeries;
+    protected volatile BarSeries timeSeries;
 
-    AbsIndicatorFactory(TimeSeries timeSeries) {
+    AbsIndicatorFactory(BarSeries timeSeries) {
         this.timeSeries = timeSeries;
     }
 
@@ -27,5 +27,5 @@ public abstract class AbsIndicatorFactory {
 
     public abstract Indicator getIndicator(IndicatorCalParam simpleIndicatorVo);
 
-    public abstract void updateTimeSeries(TimeSeries timeSeries);
+    public abstract void updateTimeSeries(BarSeries timeSeries);
 }

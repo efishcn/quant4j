@@ -4,7 +4,7 @@ package com.quant.core.indicatorAdapter;
 
 import com.quant.common.domain.to.BuyAndSellIndicatorTo;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.EMAIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 
@@ -15,7 +15,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 public class EmaIndicatorAdapter extends IndicatorAdapter {
 
 
-    public EmaIndicatorAdapter(TimeSeries timeSeries, int barCount, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    public EmaIndicatorAdapter(BarSeries timeSeries, int barCount, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         super(timeSeries, barCount, sourceBean);
     }
 

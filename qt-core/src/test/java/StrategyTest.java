@@ -23,10 +23,7 @@ import org.ta4j.core.trading.rules.UnderIndicatorRule;
 
 import java.awt.*;
 import java.security.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +42,7 @@ public class StrategyTest {
         //get kine
         List<Kline> kline = Main.getKline("1min", "2000");
         //builder time series
-        TimeSeries series = Main.loadTimeSeries(kline);
+        BarSeries series = Main.loadTimeSeries(kline);
         //构建策略并执行
         Strategy strategy = buildStrategy(series);
 
@@ -63,7 +60,7 @@ public class StrategyTest {
             System.out.println("sm9 val= " + sma9.getValue(series.getEndIndex()));
             System.out.println("sm26 val= " + sma26.getValue(series.getEndIndex()));
             ZonedDateTime nowTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli((line.getId()) * 1000), ZoneId.systemDefault());
-            Bar newBar = new BaseBar(nowTime, line.getOpen(), line.getHigh(), line.getLow(), line.getClose(), line.getVol(), series.function());
+            Bar newBar = new BaseBar(Duration.ZERO, nowTime, line.getOpen(), line.getHigh(), line.getLow(), line.getClose(), line.getVol(), line.getAmount(), 0, series.function());
             if (nowTime.isAfter(beginTime)) {
                 series.addBar(newBar);
                 beginTime = nowTime;
@@ -85,7 +82,7 @@ public class StrategyTest {
     }
 
 
-    public static Strategy buildStrategy(TimeSeries series) {
+    public static Strategy buildStrategy(BarSeries series) {
         if (series == null) {
             throw new IllegalArgumentException("Series cannot be null");
         }

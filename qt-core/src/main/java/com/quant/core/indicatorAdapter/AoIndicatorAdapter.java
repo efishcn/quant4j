@@ -3,7 +3,7 @@ package com.quant.core.indicatorAdapter;
 
 
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.AwesomeOscillatorIndicator;
 import org.ta4j.core.indicators.helpers.MedianPriceIndicator;
 
@@ -14,7 +14,7 @@ import org.ta4j.core.indicators.helpers.MedianPriceIndicator;
 public class AoIndicatorAdapter extends IndicatorAdapter {
 
 
-    public AoIndicatorAdapter(TimeSeries timeSeries, Integer barCount, Integer barCount2) {
+    public AoIndicatorAdapter(BarSeries timeSeries, Integer barCount, Integer barCount2) {
         super(timeSeries, barCount, barCount2);
     }
 

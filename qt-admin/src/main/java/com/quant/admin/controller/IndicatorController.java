@@ -57,7 +57,7 @@ public class IndicatorController extends BaseController {
         ApiClient apiClient = new ApiClient(config);
         KlineResponse response = apiClient.kline(to.getSymbol(), to.getKline(), to.getSize());
         List<Kline> data = (ArrayList<Kline>) response.data;
-        TimeSeries series = IndicatorHelper.buildSeries(data);
+        BarSeries series = IndicatorHelper.buildSeries(data);
         IndicatorFactory factory = new IndicatorFactory(series);
         //是否只有一条规则
         buyOnlyOneRule.set(true);
@@ -123,7 +123,7 @@ public class IndicatorController extends BaseController {
             }
         }
 
-        TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+        BarSeriesManager seriesManager = new BarSeriesManager(series);
         TradingRecord tr = seriesManager.run(strategy);
         // Analysis
         System.out.println("策略总收益: "

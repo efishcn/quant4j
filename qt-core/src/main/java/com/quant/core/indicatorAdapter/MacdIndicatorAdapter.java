@@ -2,7 +2,7 @@ package com.quant.core.indicatorAdapter;
 
 import com.quant.common.domain.to.BuyAndSellIndicatorTo;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.MACDIndicator;
 import org.ta4j.core.indicators.adx.ADXIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
@@ -13,7 +13,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
  */
 public class MacdIndicatorAdapter extends IndicatorAdapter {
 
-    public MacdIndicatorAdapter(TimeSeries timeSeries, Integer barCount, Integer barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    public MacdIndicatorAdapter(BarSeries timeSeries, Integer barCount, Integer barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         super(timeSeries, barCount, barCount2, sourceBean);
     }
 

@@ -38,6 +38,7 @@ import org.ta4j.core.trading.rules.StopLossRule;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -101,7 +102,7 @@ public class HuoBIndicatoryStrategyImpl extends AbstractStrategy implements Trad
     public void execute() throws StrategyException {
         init();
         TradingRecord tradingRecord = builderTradingRecord();
-        TimeSeries timeSeries = IndicatorHelper.buildSeries(builderLine());
+        BarSeries timeSeries = IndicatorHelper.buildSeries(builderLine());
         Strategy strategy = buildStrategyByConfig(timeSeries, this.config.getBaseData());
         if (strategy == null) {
             throw new StrategyException(new IllegalArgumentException("策略未设置！机器人退出任务。。。"));
@@ -120,7 +121,7 @@ public class HuoBIndicatoryStrategyImpl extends AbstractStrategy implements Trad
                 }
                 Kline line = klineList.get(0);
                 ZonedDateTime nowTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli((line.getId()) * 1000), ZoneId.systemDefault());
-                Bar newBar = new BaseBar(nowTime, line.getOpen(), line.getHigh(), line.getLow(), line.getClose(), line.getVol(), timeSeries.function());
+                Bar newBar = new BaseBar(Duration.ZERO, nowTime, line.getOpen(), line.getHigh(), line.getLow(), line.getClose(), line.getVol(), line.getAmount(), 0, timeSeries.function());
                 if (nowTime.isAfter(beginTime)) {
                     timeSeries.addBar(newBar);
                     beginTime = nowTime;
@@ -265,7 +266,7 @@ public class HuoBIndicatoryStrategyImpl extends AbstractStrategy implements Trad
         this.orderState.setId(id);
     }
 
-    private Strategy buildStrategyByConfig(TimeSeries series, BuyAndSellIndicatorTo to) {
+    private Strategy buildStrategyByConfig(BarSeries series, BuyAndSellIndicatorTo to) {
         IndicatorFactory factory = new IndicatorFactory(series);
         //是否只有一条规则
         buyOnlyOneRule.set(true);

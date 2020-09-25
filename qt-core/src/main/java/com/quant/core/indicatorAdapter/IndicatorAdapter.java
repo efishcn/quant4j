@@ -5,7 +5,7 @@ import com.quant.common.domain.vo.IndicatorCalParam;
 import com.quant.common.exception.IndicatorException;
 import com.quant.core.factory.IndicatorFactory;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.adx.ADXIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
@@ -24,7 +24,7 @@ import static com.quant.common.constans.IndicatorCons.*;
  */
 public abstract class IndicatorAdapter {
 
-    protected TimeSeries timeSeries;
+    protected BarSeries timeSeries;
 
     protected BuyAndSellIndicatorTo.SourceBean sourceBean;
 
@@ -33,25 +33,25 @@ public abstract class IndicatorAdapter {
     protected Integer barCount2;
 
 
-    public IndicatorAdapter(TimeSeries timeSeries, int barCount, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    public IndicatorAdapter(BarSeries timeSeries, int barCount, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         this.timeSeries = timeSeries;
         this.barCount = barCount;
         this.sourceBean = sourceBean;
     }
 
-    public IndicatorAdapter(TimeSeries timeSeries, int barCount) {
+    public IndicatorAdapter(BarSeries timeSeries, int barCount) {
         this.timeSeries = timeSeries;
         this.barCount = barCount;
     }
 
-    public IndicatorAdapter(TimeSeries timeSeries, int barCount, int barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    public IndicatorAdapter(BarSeries timeSeries, int barCount, int barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         this.timeSeries = timeSeries;
         this.barCount = barCount;
         this.barCount2 = barCount2;
         this.sourceBean = sourceBean;
     }
 
-    public IndicatorAdapter(TimeSeries timeSeries, int barCount, int barCount2) {
+    public IndicatorAdapter(BarSeries timeSeries, int barCount, int barCount2) {
         this.timeSeries = timeSeries;
         this.barCount = barCount;
         this.barCount2 = barCount2;

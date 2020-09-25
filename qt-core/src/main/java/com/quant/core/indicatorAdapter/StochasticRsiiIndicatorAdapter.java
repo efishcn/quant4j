@@ -2,7 +2,7 @@ package com.quant.core.indicatorAdapter;
 
 import com.quant.common.domain.to.BuyAndSellIndicatorTo;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.RSIIndicator;
 import org.ta4j.core.indicators.SMAIndicator;
 import org.ta4j.core.indicators.StochasticOscillatorKIndicator;
@@ -15,7 +15,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 public class StochasticRsiiIndicatorAdapter extends IndicatorAdapter {
 
 
-    public StochasticRsiiIndicatorAdapter(TimeSeries timeSeries, int barCount, int barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    public StochasticRsiiIndicatorAdapter(BarSeries timeSeries, int barCount, int barCount2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         super(timeSeries, barCount, barCount2,sourceBean);
     }
 

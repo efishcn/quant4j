@@ -12,6 +12,7 @@ import com.quant.common.domain.response.KlineResponse;
 import java.awt.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -49,16 +50,18 @@ public class Main {
 
     public static final int PERIODS_AVERAGE = 14;
 
-    public static TimeSeries buildSeries(TimeSeries series, List<Kline> lines) {
+    public static BarSeries buildSeries(BarSeries series, List<Kline> lines) {
         // build a bar
         for (Kline kline : lines) {
             ZonedDateTime time = ZonedDateTime.ofInstant(Instant.ofEpochMilli(kline.getId() * 1000), ZoneId.systemDefault());
-            Bar bar = new BaseBar(time,
+            Bar bar = new BaseBar(Duration.ZERO,time,
                     kline.getOpen(),
                     kline.getHigh(),
                     kline.getLow(),
                     kline.getClose(),
                     kline.getVol(),
+                    kline.getAmount(),
+                    0,
                     series.function());
             series.addBar(bar);
         }
@@ -66,9 +69,9 @@ public class Main {
 
     }
 
-    public static TimeSeries loadTimeSeries(List<Kline> lines) {
+    public static BarSeries loadTimeSeries(List<Kline> lines) {
 
-        TimeSeries series = new BaseTimeSeries();
+        BarSeries series = new BaseBarSeries();
         Collections.reverse(lines);
         // build the list of populated bars
         return buildSeries(series, lines);
@@ -78,12 +81,12 @@ public class Main {
 
     public static void testRsi() {
         List<Kline> kline = getKline("15min", "2000");
-        TimeSeries series = loadTimeSeries(kline);
+        BarSeries series = loadTimeSeries(kline);
 
         // Running the strategy
         Strategy strategy = RSI2Strategy.buildStrategy(series, 14);
 //        Strategy strategy2 = RSI2Strategy.buildStrategy(series, 5);
-        TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+        BarSeriesManager seriesManager = new BarSeriesManager(series);
         TradingRecord tradingRecord = seriesManager.run(strategy);
 //        TradingRecord tradingRecord2 = seriesManager.run(strategy2);
         System.out.println("Number of trades for the strategy: "
@@ -227,7 +230,7 @@ public class Main {
      * @param name      the name of the chart time series
      * @return the JFreeChart time series
      */
-    private static org.jfree.data.time.TimeSeries buildChartTimeSeries(TimeSeries barseries, Indicator<Num> indicator, String name) {
+    private static org.jfree.data.time.TimeSeries buildChartTimeSeries(BarSeries barseries, Indicator<Num> indicator, String name) {
         org.jfree.data.time.TimeSeries chartTimeSeries = new org.jfree.data.time.TimeSeries(name);
         for (int i = 0; i < barseries.getBarCount(); i++) {
             Bar bar = barseries.getBar(i);
@@ -244,9 +247,9 @@ public class Main {
      * @param strategy a trading strategy
      * @param plot     the plot
      */
-    private static void addBuySellSignals(TimeSeries series, Strategy strategy, XYPlot plot) {
+    private static void addBuySellSignals(BarSeries series, Strategy strategy, XYPlot plot) {
         // Running the strategy
-        TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+        BarSeriesManager seriesManager = new BarSeriesManager(series);
         List<Trade> trades = seriesManager.run(strategy).getTrades();
         // Adding markers to plot
         for (Trade trade : trades) {
@@ -309,7 +312,7 @@ public class Main {
          * @param series a time series
          * @return a 2-period RSI strategy
          */
-        public static Strategy buildStrategy(TimeSeries series, int barCount) {
+        public static Strategy buildStrategy(BarSeries series, int barCount) {
             if (series == null) {
                 throw new IllegalArgumentException("Series cannot be null");
             }
@@ -344,7 +347,7 @@ public class Main {
          * @param series a time series
          * @return a 2-period RSI strategy
          */
-        public static Strategy buildStrategy(TimeSeries series, int barCount) {
+        public static Strategy buildStrategy(BarSeries series, int barCount) {
             if (series == null) {
                 throw new IllegalArgumentException("Series cannot be null");
             }

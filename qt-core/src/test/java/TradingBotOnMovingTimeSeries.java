@@ -69,7 +69,7 @@
 //     * @param series a time series
 //     * @return a dummy strategy
 //     */
-//    private static Strategy buildStrategy(TimeSeries series) {
+//    private static Strategy buildStrategy(BarSeries series) {
 //        if (series == null) {
 //            throw new IllegalArgumentException("Series cannot be null");
 //        }

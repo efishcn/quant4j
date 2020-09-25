@@ -1,7 +1,7 @@
 package com.quant.core.indicatorAdapter;
 
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.StochasticOscillatorKIndicator;
 
 /**
@@ -10,7 +10,7 @@ import org.ta4j.core.indicators.StochasticOscillatorKIndicator;
 public class StochasticKiIndicatorAdapter extends IndicatorAdapter {
 
 
-    public StochasticKiIndicatorAdapter(TimeSeries timeSeries, int barCount) {
+    public StochasticKiIndicatorAdapter(BarSeries timeSeries, int barCount) {
         super(timeSeries, barCount);
     }
 

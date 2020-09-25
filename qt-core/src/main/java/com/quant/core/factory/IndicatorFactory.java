@@ -4,7 +4,7 @@ import com.quant.common.domain.to.BuyAndSellIndicatorTo;
 import com.quant.core.indicatorAdapter.*;
 import com.quant.common.domain.vo.IndicatorCalParam;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.indicators.helpers.VolumeIndicator;
 
@@ -17,7 +17,7 @@ import static com.quant.common.constans.IndicatorCons.*;
 public class IndicatorFactory extends AbsIndicatorFactory {
 
 
-    public IndicatorFactory(TimeSeries timeSeries) {
+    public IndicatorFactory(BarSeries timeSeries) {
         super(timeSeries);
     }
 
@@ -108,18 +108,18 @@ public class IndicatorFactory extends AbsIndicatorFactory {
     }
 
     @Override
-    public void updateTimeSeries(TimeSeries timeSeries) {
+    public void updateTimeSeries(BarSeries timeSeries) {
         if (timeSeries == null) {
             throw new IllegalArgumentException("timeSeries must be not null");
         }
         this.timeSeries = timeSeries;
     }
 
-    private Indicator getAmount(TimeSeries timeSeries) {
+    private Indicator getAmount(BarSeries timeSeries) {
         return new VolumeIndicator(timeSeries);
     }
 
-    private Indicator getPriceIndicator(TimeSeries timeSeries) {
+    private Indicator getPriceIndicator(BarSeries timeSeries) {
         return new ClosePriceIndicator(timeSeries);
     }
 
@@ -130,7 +130,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day
      * @return
      */
-    private Indicator getRSI(TimeSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    private Indicator getRSI(BarSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         if (day == null) {
             day = 14;
         }
@@ -147,7 +147,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param sourceBean
      * @return
      */
-    private Indicator getSma(TimeSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    private Indicator getSma(BarSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         if (day == null) {
             day = 5;
         }
@@ -162,7 +162,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day
      * @return
      */
-    private Indicator getADX(TimeSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    private Indicator getADX(BarSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         if (day == null) {
             day = 14;
         }
@@ -179,7 +179,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param sourceBean
      * @return
      */
-    private Indicator getEma(TimeSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    private Indicator getEma(BarSeries timeSeries, Integer day, BuyAndSellIndicatorTo.SourceBean sourceBean) {
         if (day == null) {
             day = 5;
         }
@@ -195,7 +195,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day
      * @return
      */
-    private Indicator getCCI(TimeSeries timeSeries, Integer day) {
+    private Indicator getCCI(BarSeries timeSeries, Integer day) {
         if (day == null) {
             day = 20;
         }
@@ -211,7 +211,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day2
      * @return
      */
-    private Indicator getAo(TimeSeries timeSeries, Integer day, Integer day2) {
+    private Indicator getAo(BarSeries timeSeries, Integer day, Integer day2) {
         IndicatorAdapter aoIndicatorAdapter = new AoIndicatorAdapter(timeSeries, day, day2);
         return aoIndicatorAdapter.indicatorCalculation();
     }
@@ -223,7 +223,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day
      * @return
      */
-    private Indicator getStochK(TimeSeries timeSeries, Integer day) {
+    private Indicator getStochK(BarSeries timeSeries, Integer day) {
         if (day == null) {
             day = 3;
         }
@@ -238,7 +238,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day
      * @return
      */
-    private Indicator getStochD(TimeSeries timeSeries, Integer day) {
+    private Indicator getStochD(BarSeries timeSeries, Integer day) {
         if (day == null) {
             day = 3;
         }
@@ -251,7 +251,7 @@ public class IndicatorFactory extends AbsIndicatorFactory {
      * @param day2
      * @return
      */
-    private Indicator getMacd(TimeSeries timeSeries, Integer day, Integer day2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
+    private Indicator getMacd(BarSeries timeSeries, Integer day, Integer day2, BuyAndSellIndicatorTo.SourceBean sourceBean) {
 
         if (day == null) {
             day = 12;

@@ -10,6 +10,7 @@ import org.ta4j.core.*;
 import org.ta4j.core.trading.rules.*;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,20 +31,22 @@ public class IndicatorHelper {
      * @param lines
      * @return
      */
-    public static TimeSeries buildSeries(List<Kline> lines) {
+    public static BarSeries buildSeries(List<Kline> lines) {
 
-        TimeSeries series = new BaseTimeSeries();
+        BarSeries series = new BaseBarSeries();
         Collections.reverse(lines);
 
         for (Kline kline : lines) {
             ZonedDateTime time = ZonedDateTime.ofInstant(Instant.ofEpochMilli(kline.getId() * 1000), ZoneId.systemDefault());
             // build a bar
-            Bar bar = new BaseBar(time,
+            Bar bar = new BaseBar(Duration.ZERO, time,
                     kline.getOpen(),
                     kline.getHigh(),
                     kline.getLow(),
                     kline.getClose(),
                     kline.getVol(),
+                    kline.getAmount(),
+                    0,
                     series.function());
             series.addBar(bar);
         }
@@ -57,7 +60,7 @@ public class IndicatorHelper {
      * @param bean
      * @return
      */
-    public static Indicator builderIndicator(RuleBean bean, TimeSeries timeSeries) {
+    public static Indicator builderIndicator(RuleBean bean, BarSeries timeSeries) {
         try {
             IndicatorFactory factory = new IndicatorFactory(timeSeries);
             String value = bean.getValue();
@@ -84,7 +87,7 @@ public class IndicatorHelper {
      * @param onlyOneRule
      * @return
      */
-    public static Rule simpleBuilder(IndicatorBean bean, IndicatorFactory factory, TimeSeries series, Rule rule, ThreadLocal<Boolean> onlyOneRule) {
+    public static Rule simpleBuilder(IndicatorBean bean, IndicatorFactory factory, BarSeries series, Rule rule, ThreadLocal<Boolean> onlyOneRule) {
         //指标名称
         String NameIndicator = bean.getRuleFirst().getValue();
         boolean price = NameIndicator.equals(PRICE);
@@ -121,7 +124,7 @@ public class IndicatorHelper {
                                    String value,
                                    ThreadLocal<Boolean> ruleOnlyOne,
                                    IndicatorBean bean,
-                                   TimeSeries timeSeries,
+                                   BarSeries timeSeries,
                                    Rule entry) {
         if (price) {
             //是价格指标

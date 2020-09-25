@@ -3,7 +3,7 @@ package com.quant.core.indicatorAdapter;
 
 
 import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.CCIIndicator;
 
 
@@ -13,7 +13,7 @@ import org.ta4j.core.indicators.CCIIndicator;
 public class CciIndicatorAdapter extends IndicatorAdapter {
 
 
-    public CciIndicatorAdapter(TimeSeries timeSeries, int barCount) {
+    public CciIndicatorAdapter(BarSeries timeSeries, int barCount) {
         super(timeSeries, barCount);
     }
 
