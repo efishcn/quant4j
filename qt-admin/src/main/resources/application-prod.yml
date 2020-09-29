@@ -1,21 +1,22 @@
 server:
   port: 8180
-  address: 0.0.0.0
+#  address: 0.0.0.0
+
 #添加数据源
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/quant?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: root
-    password: xxxx
+    username: quant
+    password: Ht4BJ2mKiEsZTei5
     druid:
       initial-size: 5
       min-idle: 10
       max-active: 20
       max-wait: 60000
-      min-evictable-idle-time-millis: 6000
-      time-between-eviction-runs-millis: 3000
+      min-evictable-idle-time-millis: 600000
+      time-between-eviction-runs-millis: 300000
       validation-query: SELECT 1 FROM DUAL
       test-while-idle: true
       test-on-borrow: false
@@ -57,7 +58,10 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${EUREKA_ZONE_HOST:0.0.0.0}:${EUREKA_ZONE_PORT:8762}/eureka/
+      defaultZone: http://localhost:8899/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
 

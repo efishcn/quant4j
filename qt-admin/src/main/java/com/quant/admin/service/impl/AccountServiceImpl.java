@@ -119,7 +119,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         try {
             Wrapper<Account> wrapper = new EntityWrapper<>();
             wrapper.eq("user_id", uid);
-            wrapper.setSqlSelect("id,info,is_delete as isDelete,name,secret_key as secretKey,user_id as userId,create_time as createTime");//只查询2个字段
+            wrapper.setSqlSelect("id,info,is_delete as isDelete,name,access_key as accessKey,secret_key as secretKey,user_id as userId,create_time as createTime");//只查询2个字段
             wrapper.orderDesc(Collections.singleton("create_time"));
             Page<Account> accounts = this.selectPage(new Page<>(page, limit), wrapper);
             return new ApiResult(Status.SUCCESS, accounts);

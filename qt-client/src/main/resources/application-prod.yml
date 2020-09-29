@@ -1,13 +1,16 @@
 server:
   port: 8024
-  address: 0.0.0.0
+#  address: 0.0.0.0
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${EUREKA_ZONE_HOST:124.156.196.215}:${EUREKA_ZONE_PORT:8762}/eureka/
+      defaultZone: http://localhost:8899/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 124.156.196.215
   instance:
     prefer-ip-address: true
-    ip-address: 124.156.196.215
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
 
 spring:
   application:

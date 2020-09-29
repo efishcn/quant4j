@@ -14,8 +14,8 @@ spring:
       min-idle: 10
       max-active: 20
       max-wait: 60000
-      min-evictable-idle-time-millis: 6000
-      time-between-eviction-runs-millis: 3000
+      min-evictable-idle-time-millis: 600000
+      time-between-eviction-runs-millis: 300000
       validation-query: SELECT 1 FROM DUAL
       test-while-idle: true
       test-on-borrow: false
@@ -58,7 +58,10 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${EUREKA_ZONE_HOST:localhost}:${EUREKA_ZONE_PORT:8761}/eureka/
+      defaultZone: http://localhost:8899/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
