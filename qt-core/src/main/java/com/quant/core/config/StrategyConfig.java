@@ -25,6 +25,7 @@ package com.quant.core.config;
 
 import com.quant.common.domain.to.llIndicatorTo;
 import com.quant.common.domain.vo.StrategyVo;
+import com.quant.common.enums.StrategyType;
 
 /**
  * @author yang
@@ -36,5 +37,7 @@ public interface StrategyConfig {
     StrategyVo getStrategyVo();
 
     llIndicatorTo getIndicatorStrategy();
+
+    StrategyType getStrategyType();
 
 }

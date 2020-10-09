@@ -1,5 +1,6 @@
 package com.quant.admin.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.quant.common.config.VpnProxyConfig;
 import com.quant.common.domain.response.Kline;
 import com.quant.common.domain.response.KlineResponse;
@@ -143,12 +144,26 @@ public class IndicatorController extends BaseController {
             date.put("价格", k.getClose());
             for (Trade t : tradingRecord.getTrades()) {
                 if (t.getEntry().getIndex() == l) {
+                    JSONObject o = new JSONObject();
+                    o.put("position","end");
+                    o.put("formatter","买入");
+                    o.put("fontSize","8");
+                    date2.put("label", o);
                     date2.put("name", "买入");
                     date2.put("xAxis", s);
                     buyAndSell.add(date2);
                     break;
                 }
                 if (t.getExit().getIndex() == l) {
+                    JSONObject o = new JSONObject();
+                    o.put("position","start");
+                    o.put("formatter","卖出");
+                    o.put("fontSize","8");
+                    date2.put("label", o);
+                    o = new JSONObject();
+                    o.put("type","solid");
+                    o.put("color","red");
+                    date2.put("lineStyle", o);
                     date2.put("name", "卖出");
                     date2.put("xAxis", s);
                     buyAndSell.add(date2);

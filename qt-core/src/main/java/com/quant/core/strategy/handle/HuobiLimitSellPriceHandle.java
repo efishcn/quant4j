@@ -33,13 +33,14 @@ public class HuobiLimitSellPriceHandle extends StrategyHandle {
                                         AccountConfig accountConfig,
                                         int pricePrecision,
                                         int amountPrecision,
-                                        BigDecimal baseBalance) {
+                                        BigDecimal baseBalance,
+                                        BigDecimal quotaBalance) {
 
         if (getHandle() == null) {
             return null;
         }
 
-        final BaseInfoEntity baseInfo = config.getIndicatorStrategy().getBaseInfo();
+        final BaseInfoEntity baseInfo = getBaseInfo(config);
         if (baseInfo.getIsLimitPrice() == PirceType.isLimit.getType()) {
             //从当前的20个卖出订单里找出最优的价格 （限价卖出）
             final MarketOrder marketOrder = tradingApi.getMarketOrders(marketConfig, "500");
@@ -71,7 +72,8 @@ public class HuobiLimitSellPriceHandle extends StrategyHandle {
                     accountConfig,
                     pricePrecision,
                     amountPrecision,
-                    baseBalance);
+                    baseBalance,
+                    quotaBalance);
 
         }
 

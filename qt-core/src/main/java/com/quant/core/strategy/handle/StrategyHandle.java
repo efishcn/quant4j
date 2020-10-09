@@ -32,11 +32,23 @@ public abstract class StrategyHandle {
                                                  AccountConfig accountConfig,
                                                  int pricePrecision,
                                                  int amountPrecision,
-                                                 BigDecimal baseBalance);
+                                                 BigDecimal baseBalance,
+                                                 BigDecimal quotaBalance);
 
 
     public StrategyHandle getHandle() {
         return handle;
+    }
+
+    public BaseInfoEntity getBaseInfo(StrategyConfig config) {
+        switch (config.getStrategyType()) {
+            case simple:
+                return config.getStrategyVo().getBaseInfo();
+            case indicator:
+                return config.getIndicatorStrategy().getBaseInfo();
+            default:
+                return config.getStrategyVo() != null ? config.getStrategyVo().getBaseInfo() : config.getIndicatorStrategy().getBaseInfo();
+        }
     }
 
     public void setHandle(StrategyHandle handle) {

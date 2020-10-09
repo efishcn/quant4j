@@ -470,8 +470,8 @@ public class HuoBIndicatoryStrategyImpl extends AbstractStrategy implements Trad
             return;
         }
         //是否是限价
-        StrategyHandle strategyHandle = new HuobiLimitBuyPriceHandle(new HuobiNotLimitBuyPriceHandle(null));
-        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance);
+        StrategyHandle strategyHandle = new HuobiLimitBuyPriceHandle(new HuobiLimitBuyPriceHandle(null));
+        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance, quotaBalance);
 
         setHandleResult(handleResult);
         handleResultForBuy(this);
@@ -497,7 +497,7 @@ public class HuoBIndicatoryStrategyImpl extends AbstractStrategy implements Trad
         }
         //是否是限价
         StrategyHandle strategyHandle = new HuobiLimitSellPriceHandle(new HuobiNotLimitSellPriceHandle(null));
-        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance);
+        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance, quotaBalance);
         //获取结果
         setHandleResult(handleResult);
         handleResultForSell(this);

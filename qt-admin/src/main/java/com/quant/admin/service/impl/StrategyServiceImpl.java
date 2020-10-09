@@ -42,7 +42,6 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
         if (baseInfo != null) {
             //基础信息配置i
             strategy.setUserId(Integer.valueOf(uid));
-            strategy.setStrategyType(0);
             strategy.setStrategyName(baseInfo.getStrategyName());
             strategy.setBuyAmount(baseInfo.getBuyAmount());
             strategy.setSellAmount(baseInfo.getSellAmount());

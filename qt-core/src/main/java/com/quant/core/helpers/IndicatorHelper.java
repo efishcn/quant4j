@@ -90,8 +90,8 @@ public class IndicatorHelper {
     public static Rule simpleBuilder(IndicatorBean bean, IndicatorFactory factory, BarSeries series, Rule rule, ThreadLocal<Boolean> onlyOneRule) {
         //指标名称
         String NameIndicator = bean.getRuleFirst().getValue();
-        boolean price = NameIndicator.equals(PRICE);
-        boolean amount = NameIndicator.equals(VOLUME);
+        boolean price = NameIndicator.equalsIgnoreCase(PRICE);
+        boolean amount = NameIndicator.equalsIgnoreCase(VOLUME);
         //获取价格的值
         String value = bean.getRuleSecond().getValue();
         //获取之间的关系

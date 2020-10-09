@@ -106,6 +106,7 @@ public class HuoBiSimpleStrategyImpl extends AbstractStrategy implements Trading
         this.redisUtil = builder.getRedisUtil();
         this.robotId = builder.getRobotStrategyVo().getRobotId();
         final StrategyConfig config = builder.getStrategyConfig();
+        this.strategyConfig = config;
         initSetting(config);
         this.orderState = new OrderState();
         this.weights = new Weights();
@@ -538,7 +539,7 @@ public class HuoBiSimpleStrategyImpl extends AbstractStrategy implements Trading
         }
         //是否是限价
         StrategyHandle strategyHandle = new HuobiLimitBuyPriceHandle(new HuobiNotLimitBuyPriceHandle(null));
-        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance);
+        StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance, quotaBalance);
         setHandleResult(handleResult);
         handleResultForBuy(this);
     }
@@ -565,7 +566,7 @@ public class HuoBiSimpleStrategyImpl extends AbstractStrategy implements Trading
         }
         //是否是限价
         final StrategyHandle strategyHandle = new HuobiLimitSellPriceHandle(new HuobiNotLimitSellPriceHandle(null));
-        final StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance);
+        final StrategyHandle.HandleResult handleResult = strategyHandle.strategyRequest(tradingApi, marketConfig, strategyConfig, accountConfig, pricePrecision, amountPrecision, baseBalance, quotaBalance);
         //获取结果
         setHandleResult(handleResult);
         handleResultForSell( this);

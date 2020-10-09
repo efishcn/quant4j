@@ -2,6 +2,7 @@ package com.quant.core.strategy.handle;
 
 import com.quant.common.domain.entity.MarketOrder;
 import com.quant.common.domain.vo.BaseInfoEntity;
+import com.quant.common.enums.BuyType;
 import com.quant.common.enums.HBOrderType;
 import com.quant.common.enums.PirceType;
 import com.quant.common.enums.SellType;
@@ -33,26 +34,29 @@ public class HuobiLimitBuyPriceHandle extends StrategyHandle {
                                         AccountConfig accountConfig,
                                         int pricePrecision,
                                         int amountPrecision,
-                                        BigDecimal baseBalance) {
+                                        BigDecimal baseBalance,
+                                        BigDecimal quotaBalance) {
 
         if (getHandle() == null) {
             return null;
         }
 
-        final BaseInfoEntity baseInfo = config.getIndicatorStrategy().getBaseInfo();
+        final BaseInfoEntity baseInfo = getBaseInfo(config);
         if (baseInfo.getIsLimitPrice() == PirceType.isLimit.getType()) {
             //从当前的20个卖出订单里找出最优的价格 （限价卖出）
             final MarketOrder marketOrder = tradingApi.getMarketOrders(marketConfig, "500");
             final BigDecimal currentBuyPrice = marketOrder.getBuy().get(0).getPrice();
             //计算卖出的价格
             final BigDecimal buyPrice = baseInfo.getBuyPrice().add(currentBuyPrice).setScale(pricePrecision, RoundingMode.UP);
-            //计算购买的数量 是否全部卖出
+            //计算购买的数量 是否全部买入
             BigDecimal buyAmount = BigDecimal.ZERO;
-            if (baseInfo.getIsAllSell() == SellType.sellAll.getType()) {
+            if (baseInfo.getIsAllBuy() == BuyType.buyAll.getType()) {
                 //从用户api的表里查询到他的账户相应的base 火币的数量全部购买
-                buyAmount = buyAmount.add(baseBalance).setScale(amountPrecision, RoundingMode.DOWN);
+                //计算能买多少
+                BigDecimal canBuyAmount = quotaBalance.divide(buyPrice, 20, BigDecimal.ROUND_HALF_UP);
+                buyAmount = buyAmount.add(canBuyAmount).setScale(amountPrecision, RoundingMode.DOWN);
             } else {
-                buyAmount = buyAmount.add(baseInfo.getSellAmount().setScale(amountPrecision, RoundingMode.DOWN));
+                buyAmount = buyAmount.add(baseInfo.getBuyAmount().setScale(amountPrecision, RoundingMode.DOWN));
             }
             HBOrderType hbOrderType = HBOrderType.BUY_LIMIT;
             return new HandleResult(hbOrderType, buyPrice, buyAmount);
@@ -63,7 +67,8 @@ public class HuobiLimitBuyPriceHandle extends StrategyHandle {
                     accountConfig,
                     pricePrecision,
                     amountPrecision,
-                    baseBalance);
+                    baseBalance,
+                    quotaBalance);
 
         }
 
