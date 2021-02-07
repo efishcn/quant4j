@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.num.Num;
 import org.ta4j.core.num.PrecisionNum;
 import org.ta4j.core.trading.rules.StopGainRule;
 import org.ta4j.core.trading.rules.StopLossRule;
@@ -92,6 +93,8 @@ public class IndicatorController extends BaseController {
         }
         //构建策略
         Strategy strategy = new BaseStrategy(entry, exit);
+        //设置不稳定期间
+        strategy.setUnstablePeriod(24);
         // 回测
         TradingRecord tradingRecord = new BaseTradingRecord();
         for (int i = 0; i < series.getEndIndex(); i++) {
@@ -127,14 +130,20 @@ public class IndicatorController extends BaseController {
         BarSeriesManager seriesManager = new BarSeriesManager(series);
         TradingRecord tr = seriesManager.run(strategy);
         // Analysis
+        Num profit = new TotalProfitCriterion().calculate(series, tr);
+        int tradeCount = tr.getTradeCount();
         System.out.println("策略总收益: "
-                + new TotalProfitCriterion().calculate(series, tr));
+                + profit.getDelegate());
 
         System.out.println("策略总交易数: "
-                + tr.getTradeCount());
+                + tradeCount);
+        JSONObject result = new JSONObject();
+        result.put("profit", profit);
+        result.put("tradeCount", tradeCount);
         HashMap<String, Object> param = new HashMap<>(2);
         List<HashMap> backDataList = new ArrayList<>(data.size());
         List<HashMap> buyAndSell = new ArrayList<>(tr.getTradeCount() * 2);
+
         int l = 0;
         for (Kline k : data) {
             HashMap<Object, Object> date = new HashMap<>();
@@ -175,6 +184,7 @@ public class IndicatorController extends BaseController {
         }
         param.put("data", backDataList);
         param.put("buyOrSell", buyAndSell);
+        param.put("result", result);
         return new ApiResult(Status.SUCCESS, param);
 
     }
